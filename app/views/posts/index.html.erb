@@ -1,0 +1,29 @@
+<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="label1">投稿</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <%= form_tag({:controller => 'posts', :action => 'create'}, {:method => :post}) do %>
+                    <%= text_field_tag :input_edit_pass, "", class: 'form-control', placeholder: "削除用パスワード" %>
+                    <%= submit_tag("編集する", class: "btn btn-primary") %>
+                <% end %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal1">
+    新規投稿
+</button><br/>
+<% @posts.each do |post| %>
+<%= link_to post.name, "/posts/" + post.id.to_s %><br />
+<% end %>

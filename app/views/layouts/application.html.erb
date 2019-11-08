@@ -2,13 +2,43 @@
 <html>
   <head>
     <title>AteamInternApp</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+      <a href="#" class="navbar-brand">BBS</a>
+      <button class="navbar-toggler" type="button"
+          data-toggle="collapse"
+          data-target="#navmenu1"
+          aria-controls="navmenu1"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navmenu1">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="#">Menu#1</a>
+          <a class="nav-item nav-link" href="#">Menu#2</a>
+          <a class="nav-item nav-link" href="#">Menu#3</a>
+        </div>
+      </div>
+    </nav>
+    <div class="container pt-3">
+      <!--
+      <div class="row">
+        <div class="col-sm"> One of three columns </div>
+        <div class="col-sm"> One of three columns </div>
+        <div class="col-sm"> One of three columns </div>
+      </div>
+      <header>
+        <h1><%= link_to "OOO BBS", "/posts" %></h1>
+      </header>
+      -->
+      <%= yield %>
+    </div>
   </body>
 </html>

@@ -1,0 +1,14 @@
+<% if flash[:error] %>
+    <div>
+        編集用のパスワードが一致しませんでした。パスワードを忘れてしまった場合は<a href="">こちら</a>
+    </div>
+<% end %>
+<div><%= @post.id %>(<%= @post.created_at %>)</div>
+<div><%= @post.name %> さん</div>
+<div><%= @post.content %></div>
+<div>
+    <%= form_tag({:controller => 'posts', :action => 'edit'}, {:method => :post}) do %>
+        <%= text_field_tag :input_edit_pass, "", class: 'form-control', placeholder: "削除用パスワード" %>
+        <%= submit_tag("編集する", class: "btn btn-primary") %>
+    <% end %>
+</div>
