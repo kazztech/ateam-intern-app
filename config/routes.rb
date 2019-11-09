@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
-  get  '/posts',          to: 'posts#index'
-  get  '/posts/:id',      to: 'posts#read'
-  post '/posts/:id/edit', to: 'posts#edit'
-  post '/posts/create',   to: 'posts#create'
+  get  '/',                 to: 'posts#home'
+
+  get  '/posts',            to: 'posts#index'
+  get  '/posts/new',        to: 'posts#new'
+  post '/posts/create',     to: 'posts#create'
+
+  post '/posts/reply',      to: 'posts#reply'
+
+  get  '/posts/:id',        to: 'posts#read'
+  post '/posts/:id/edit',   to: 'posts#edit'
+  post '/posts/:id/update', to: 'posts#update'
+
 end

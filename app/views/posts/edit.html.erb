@@ -1,2 +1,30 @@
-<%= link_to "投稿に戻る", "/posts/" + @post.id.to_s %>
-<%= @post %>
+<div><%= link_to "投稿に戻る", "/posts/" + @post.id.to_s %></div>
+<h2 class="mb-4">新規投稿</h2>
+
+<%= form_tag({:controller => 'posts', :action => 'update'}, {:method => :post, :multipart => true}) do %>
+    <%= hidden_field_tag :id, @post.id %>    
+
+    <div class="form-group">
+        <%= label_tag :name, 'ニックネーム' %>
+        <%= text_field_tag :name, @post.name, class: 'form-control', placeholder: "ニックネーム" %>
+    </div>
+
+    <div class="form-group">
+        <%= label_tag :title, 'タイトル' %>
+        <%= text_field_tag :title, @post.title, class: 'form-control', placeholder: "タイトル" %>
+    </div>
+
+    <div class="form-group">
+        <%= label_tag :content, '内容' %>
+        <%= text_area_tag :content, @post.content, class: 'form-control', placeholder: "内容", rows: "4" %>
+    </div>
+
+    <div class="form-group">
+        <%= label_tag :image, '添付画像' %>
+        <%= file_field_tag :image %>
+    </div>
+
+    <div class="form-group text-right">
+        <%= submit_tag("送信", class: "btn btn-primary") %>
+    </div>
+<% end %>

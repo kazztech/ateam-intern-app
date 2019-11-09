@@ -1,14 +1,121 @@
-<% if flash[:error] %>
-    <div>
-        編集用のパスワードが一致しませんでした。パスワードを忘れてしまった場合は<a href="">こちら</a>
-    </div>
+<% if @post.parent_post_id %>
+    <div class="mb-2"><a href="/posts/<%= @post.parent_post_id %>">＜ 返信元に戻る</a></div>
 <% end %>
-<div><%= @post.id %>(<%= @post.created_at %>)</div>
-<div><%= @post.name %> さん</div>
-<div><%= @post.content %></div>
-<div>
-    <%= form_tag({:controller => 'posts', :action => 'edit'}, {:method => :post}) do %>
-        <%= text_field_tag :input_edit_pass, "", class: 'form-control', placeholder: "削除用パスワード" %>
-        <%= submit_tag("編集する", class: "btn btn-primary") %>
+
+<div class="border-bottom pb-3 mb-3">
+    <div>
+        <div class="float-left">
+            <%= @post.name %> - <%= @post.created_at.strftime("%Y/%m/%d %H:%M") %>
+        </div>
+        <button type="button" class="btn btn-sm float-right" data-toggle="modal" data-target="#modal<%= @post.id.to_s %>">
+            編集
+        </button>
+    </div>
+    <br/>
+    <h2><%= @post.title %></h2>
+    <%= simple_format(h(@post.content), {}, wrapper_tag: "div") %>
+    <% if File.exist?("public/images/" + @post.id.to_s + ".png") %>
+        <div class="pt-2">
+            <%= image_tag "/images/" + @post.id.to_s + ".png", style: "max-width:100%" %>
+        </div>
     <% end %>
 </div>
+
+<button 
+    type="button"
+    class="btn btn-primary btn-block"
+    data-toggle="collapse"
+    data-target="#replyForm"
+    aria-expanded="false"
+    aria-controls="replyForm">
+    返信する
+</button>
+
+<div class="collapse" id="replyForm">
+    <div class="card card-body">
+        <%= form_tag({:controller => 'posts', :action => 'reply'}, {:method => :post}) do %>
+            <%= hidden_field_tag :id, @post.id %>
+            <div class="form-group">
+                <%= label_tag :name, 'ニックネーム' %>
+                <%= text_field_tag :name, session[:name], class: 'form-control', placeholder: "ニックネーム" %>
+            </div>
+            <div class="form-group">
+                <%= label_tag :edit_pass, '編集時パスワード' %>
+                <%= text_field_tag :edit_pass, session[:edit_pass], class: 'form-control', placeholder: "編集時パスワード" %>
+            </div>
+            <div class="form-group">
+                <%= label_tag :content, '内容' %>
+                <%= text_area_tag :content, "", class: 'form-control', placeholder: "内容", rows: "4" %>
+            </div>
+            <div class="form-group text-right">
+                <%= submit_tag("送信", class: "btn btn-primary") %>
+            </div>
+        <% end %>
+    </div>
+</div>
+
+<div class="border-top my-3">
+    <% @replies.each do |reply| %>
+        <a href="/posts/<%= reply.id %>">
+            <div class="py-2 my-1 border-bottom">
+                <div>
+                    <div class="float-left text-dark">
+                        <%= reply.name %> - <%= reply.created_at.strftime("%Y/%m/%d %H:%M") %>
+                    </div>
+                    <button type="button" class="btn btn-sm float-right" data-toggle="modal" data-target="#modal<%= reply.id.to_s %>">
+                        編集
+                    </button>
+                </div>
+                <br/>
+                <div class=" text-dark"><%= simple_format(h(reply.content), {}, wrapper_tag: "div") %></div>
+            </div>
+            <%= form_tag('/posts/' + reply.id.to_s + "/edit" , method: :post) do %>
+                <div class="modal fade" id="modal<%= reply.id.to_s %>" tabindex="-1" role="dialog" aria-labelledby="label<%= reply.id.to_s %>" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="label<%= reply.id.to_s %>">編集パスワード認証</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <%= text_field_tag :input_edit_pass, session[:edit_pass], class: 'form-control', placeholder: "削除用パスワード" %>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <%= submit_tag("送信", class: "btn btn-primary") %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </a>
+    <% end %>
+</div>
+
+<%= form_tag('/posts/' + @post.id.to_s + "/edit" , method: :post) do %>
+    <div class="modal fade" id="modal<%= @post.id.to_s %>" tabindex="-1" role="dialog" aria-labelledby="label<%= @post.id.to_s %>" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="label<%= @post.id.to_s %>">編集パスワード認証</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <%= text_field_tag :input_edit_pass, session[:edit_pass], class: 'form-control', placeholder: "削除用パスワード" %>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <%= submit_tag("送信", class: "btn btn-primary") %>
+                </div>
+            </div>
+        </div>
+    </div>
+<% end %>

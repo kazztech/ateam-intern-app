@@ -56,3 +56,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # bootstrap4 add 20191107
 gem 'bootstrap', '4.0.0'
 gem 'jquery-rails', '4.3.1'
+gem 'carrierwave'

@@ -10,35 +10,42 @@
 
   <body>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-      <a href="#" class="navbar-brand">BBS</a>
+      <a href="/posts" class="navbar-brand">TEST BBS</a>
       <button class="navbar-toggler" type="button"
-          data-toggle="collapse"
-          data-target="#navmenu1"
-          aria-controls="navmenu1"
-          aria-expanded="false"
-          aria-label="Toggle navigation">
+        data-toggle="collapse"
+        data-target="#navmenu"
+        aria-controls="navmenu"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navmenu1">
+      <div class="collapse navbar-collapse justify-content-end " id="navmenu">
         <div class="navbar-nav">
-          <a class="nav-item nav-link" href="#">Menu#1</a>
-          <a class="nav-item nav-link" href="#">Menu#2</a>
+          <a class="nav-item nav-link" href="/posts">投稿一覧</a>
+          <a class="nav-item nav-link" href="/posts/new">新規投稿</a>
           <a class="nav-item nav-link" href="#">Menu#3</a>
         </div>
       </div>
     </nav>
-    <div class="container pt-3">
-      <!--
-      <div class="row">
-        <div class="col-sm"> One of three columns </div>
-        <div class="col-sm"> One of three columns </div>
-        <div class="col-sm"> One of three columns </div>
+
+    <% if flash[:notice] == "edit_pass_auth_error" %>
+      <div class="alert alert-warning mb-0" role="alert">
+        編集用のパスワードが一致しませんでした。パスワードを忘れてしまった場合は<a href="">こちら</a>
       </div>
-      <header>
-        <h1><%= link_to "OOO BBS", "/posts" %></h1>
-      </header>
-      -->
+    <% elsif flash[:notice] == "create_post_success" %>
+      <div class="alert alert-primary mb-0" role="alert">
+        投稿が完了しました。
+      </div>
+    <% elsif flash[:notice] == "reply_success" %>
+      <div class="alert alert-primary mb-0" role="alert">
+        投稿に返信しました。
+      </div>
+    <% end %>
+
+    <div class="container pt-3">
       <%= yield %>
     </div>
+
+    <!-- 共通モーダル -->
   </body>
 </html>
