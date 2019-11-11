@@ -5,13 +5,25 @@
 <div class="border-bottom pb-3 mb-3">
     <div>
         <div class="float-left">
-            <%= @post.name %> - <%= @post.created_at.strftime("%Y/%m/%d %H:%M") %>
+            <% if @category_badge_colors.has_key?(@post.category.id.to_s) %>
+                <span class="badge badge-<%= @category_badge_colors[@post.category.id.to_s] %> mr-1">
+                    <%= @post.category.name %>
+                </span>
+            <% elsif @post.category_id != nil && @post.category_id != 99 %>
+                <span class="badge badge-white mr-1">
+                    その他
+                </span>
+            <% end %>
+            (閲覧:<%= @post.impressionist_count %>, 返信:<%= @post.reply_count %>)
         </div>
-        <button type="button" class="btn btn-sm float-right" data-toggle="modal" data-target="#modal<%= @post.id.to_s %>">
+        <button type="button" class="btn btn-sm btn-secondary float-right" data-toggle="modal" data-target="#modal<%= @post.id.to_s %>">
             編集
         </button>
+        <div style="clear: both;"></div>
+        <div>
+            <%= @post.name %> - <%= @post.created_at.strftime("%Y/%m/%d %H:%M") %>
+        </div>
     </div>
-    <br/>
     <h2><%= @post.title %></h2>
     <%= simple_format(h(@post.content), {}, wrapper_tag: "div") %>
     <% if File.exist?("public/images/" + @post.id.to_s + ".png") %>
@@ -56,13 +68,13 @@
 
 <div class="border-top my-3">
     <% @replies.each do |reply| %>
-        <a href="/posts/<%= reply.id %>">
+        <a href="/posts/<%= reply.id %>" class="text-dark text-decoration-none">
             <div class="py-2 my-1 border-bottom">
                 <div>
                     <div class="float-left text-dark">
                         <%= reply.name %> - <%= reply.created_at.strftime("%Y/%m/%d %H:%M") %>
                     </div>
-                    <button type="button" class="btn btn-sm float-right" data-toggle="modal" data-target="#modal<%= reply.id.to_s %>">
+                    <button type="button" class="btn btn-sm float-right btn-secondary" data-toggle="modal" data-target="#modal<%= reply.id.to_s %>">
                         編集
                     </button>
                 </div>

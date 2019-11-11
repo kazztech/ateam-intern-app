@@ -3,9 +3,21 @@
 <div class="pb-2 border-bottom"></div>
 <% @posts.each do |post| %>
     <div class="py-2 border-bottom">
-        <a href="/posts/<%= post.id.to_s %>">
-            <div class="text-dark"><%= post.name %> - <%= post.created_at.strftime("%Y/%m/%d %H:%M") %></div>
-            <div class="text-dark"><%= post.title %></div>
+        <a href="/posts/<%= post.id.to_s %>" class="text-dark text-decoration-none">
+            <div> 
+                <% if @category_badge_colors.has_key?(post.category.id.to_s) %>
+                    <span class="badge badge-<%= @category_badge_colors[post.category.id.to_s] %> mr-1">
+                        <%= post.category.name %>
+                    </span>
+                <% else %>
+                    <span class="badge badge-white mr-1">
+                        その他
+                    </span>
+                <% end %>
+                <%= post.name %> - <%= post.created_at.strftime("%Y/%m/%d %H:%M") %>
+            </div>
+            <div class="lead"><%= post.title %></div>
+            <div>(閲覧:<%= post.impressionist_count %>, 返信:<%= post.reply_count %>)</div>
         </a>
     </div>
 <% end %>

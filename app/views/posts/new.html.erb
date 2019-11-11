@@ -9,8 +9,12 @@
         <%= text_field_tag :title, "", class: 'form-control', placeholder: "タイトル" %>
     </div>
     <div class="form-group">
+        <%= label_tag :category, 'カテゴリー' %>
+        <%= select_tag :category, options_for_select(@category_option, :class=>"form-control") %>
+    </div>
+    <div class="form-group">
         <%= label_tag :edit_pass, '編集時パスワード' %>
-        <%= text_field_tag :edit_pass, session[:edit_pass], class: 'form-control', placeholder: "編集時パスワード" %>
+        <%= text_field_tag :edit_pass, session[:edit_pass], class: 'form-control', placeholder: "編集時パスワード", class: "form-control" %>
     </div>
     <div class="form-group">
         <%= label_tag :content, '内容' %>
