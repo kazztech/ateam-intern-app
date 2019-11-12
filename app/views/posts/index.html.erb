@@ -1,5 +1,33 @@
-<%= link_to "新規投稿", "/posts/new", class: "btn btn-primary btn-block mt-2" %><br />
 <h2>投稿一覧</h2>
+
+<button 
+    type="button"
+    class="btn btn-primary btn-block my-3"
+    data-toggle="collapse"
+    data-target="#replyForm"
+    aria-expanded="false"
+    aria-controls="replyForm">
+    検索条件を指定する
+</button>
+
+<div class="collapse" id="replyForm">
+    <div class="card card-body">
+        <%= form_tag({:controller => 'posts', :action => 'index'}, {:method => :get, :multipart => true, enforce_utf8: false}) do %>
+            <div class="form-group">
+                <%= label_tag :keyword, 'キーワード検索' %>
+                <%= text_field_tag :keyword, params[:keyword], class: 'form-control', placeholder: "キーワード" %>
+            </div>
+            <div class="form-group">
+                <%= label_tag :category, 'カテゴリー' %>
+                <%= select_tag :category, options_for_select(@category_option, :selected => params[:category]), class: 'form-control' %>
+            </div>
+            <div class="form-group text-right">
+                <%= submit_tag("送信", name: nil, class: "btn btn-primary") %>
+            </div>
+        <% end %>
+    </div>
+</div>
+
 <div class="pb-2 border-bottom"></div>
 <% @posts.each do |post| %>
     <div class="py-2 border-bottom">

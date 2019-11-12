@@ -15,8 +15,28 @@ class PostsController < ApplicationController
     end
 
     def index
+        # 絞り込み検索のカテゴリ表示
+        categolies = Category.all()
+        @category_option = []
+        for category in categolies do
+            @category_option.push([category.name, category.id.to_s])
+        end
         @category_badge_colors = CATEGORY_BADGE_COLORS
-        @posts = Post.where(parent_post_id: nil).where(is_hide: false).order(id: :desc)   
+
+        # 取得
+        @posts = Post
+            .where(parent_post_id: nil)
+            .where(is_hide: false)
+        
+        if params[:category] && params[:category] != ""
+            @posts = @posts.where(category_id: params[:category])
+        end
+
+        if params[:keyword] && params[:keyword]
+            @posts = @posts.where("title LIKE ?", "%" + params[:keyword] + "%")
+        end
+        
+        @posts = @posts.order(id: :desc)   
     end
 
     def read
