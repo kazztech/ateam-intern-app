@@ -2,14 +2,6 @@ class PostsController < ApplicationController
     # PVカウントのgem
     impressionist :actions => [:index, :read]
 
-    CATEGORY_BADGE_COLORS = {
-        "1"  => "warning",
-        "2"  => "info",
-        "3"  => "danger",
-        "4"  => "success",
-        "10" => "secondary"
-    }
-
     def home
         # homeは保留
         redirect_to "/posts"
@@ -18,11 +10,10 @@ class PostsController < ApplicationController
     def index
         # 絞り込み検索のカテゴリ表示
         categolies = Category.all()
-        @category_option = []
+        @category_option = [["未選択", ""]]
         for category in categolies do
             @category_option.push([category.name, category.id.to_s])
         end
-        @category_badge_colors = CATEGORY_BADGE_COLORS
 
         # 取得
         @posts = Post
@@ -44,7 +35,7 @@ class PostsController < ApplicationController
             if params[:gender] == "date"
                 @posts = @posts.order(created_at: :desc)
             elsif params[:gender] == "preview"
-                @posts = @posts.order(impressionist_count: :desc)
+                @posts = @posts.order(impressions_count: :desc)
             elsif params[:gender] == "reply"
                 @posts = @posts.order(reply_count: :desc)
             end
@@ -54,11 +45,32 @@ class PostsController < ApplicationController
     end
 
     def read
-        @category_badge_colors = CATEGORY_BADGE_COLORS
         @post = Post.find(params[:id])
         @replies = Post.where(parent_post_id: params[:id]).order(id: :desc)
         # PVカウント
         impressionist(@post, nil, unique: [:session_hash])
+    end
+
+    def addBookmark
+        if session[:bookmark]
+            session[:bookmark].push(params[:id])
+        else
+            session[:bookmark] = [params[:id]]
+        end
+
+        flash[:notice] = "add_bookmark"
+        redirect_to "/posts/" + params[:id].to_s
+    end
+
+    def bookmark
+        if session[:bookmark]
+            ids = session[:bookmark]
+        else
+            ids = []
+        end
+        @posts = Post.where(id: ids)
+            .where(parent_post_id: params[:id])
+            .order(id: :desc)
     end
 
     def edit
@@ -91,6 +103,13 @@ class PostsController < ApplicationController
         )
 
         redirect_to "/posts/" + id.to_s
+    end
+
+    def delete
+        Post.where(id: params[:id]).update(
+            is_hide: true
+        )
+        redirect_to "/posts"
     end
 
     def new

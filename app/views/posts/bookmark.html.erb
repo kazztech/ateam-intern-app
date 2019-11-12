@@ -1,0 +1,22 @@
+<h2 class="mb-4">ブックマーク一覧</h2>
+
+<% @posts.each do |post| %>
+<div class="py-2 border-bottom">
+    <a href="/posts/<%= post.id.to_s %>" class="text-dark text-decoration-none">
+        <div>
+            <% if post.category.badge_color %>
+                <span class="badge badge-<%= post.category.badge_color %> mr-1">
+                    <%= post.category.name %>
+                </span>
+            <% else %>
+                <span class="badge badge-white mr-1">
+                    その他
+                </span>
+            <% end %>
+            <%= post.name %> - <%= post.created_at.strftime("%Y/%m/%d %H:%M") %>
+        </div>
+        <div class="lead"><%= post.title %></div>
+        <div>(閲覧:<%= post.impressionist_count %>, 返信:<%= post.reply_count %>)</div>
+    </a>
+</div>
+<% end %>

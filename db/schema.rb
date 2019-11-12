@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191110162112) do
+ActiveRecord::Schema.define(version: 20191112133949) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "badge_color"
   end
 
   create_table "impressions", force: :cascade do |t|
@@ -55,6 +56,7 @@ ActiveRecord::Schema.define(version: 20191110162112) do
     t.string "title"
     t.integer "category_id"
     t.integer "reply_count"
+    t.integer "impressions_count", default: 0
   end
 
 end

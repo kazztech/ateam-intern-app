@@ -16,14 +16,13 @@
                 <%= label_tag :category, 'カテゴリー' %>
                 <%= select_tag :category, options_for_select(@category_option, :selected => params[:category]), class: 'form-control' %>
             </div>
-            <%= params[:gender] == "date" %>
             <div class="form-group">
                 <%= label_tag :gender, '表示順' %><br/>
-                <%= radio_button_tag :gender, "date", :checked => params[:gender] == "date" %>
+                <%= radio_button_tag :gender, "date", checked = params[:gender] == "date" %>
                 <%= label_tag :gender_date, "更新日時", {value: "date", style: "display: inline-block;", class: "mr-2"} %>
-                <%= radio_button_tag :gender, "preview", :checked => params[:gender] == "preview" %>
+                <%= radio_button_tag :gender, "preview", checked = params[:gender] == "preview" %>
                 <%= label_tag :gender_preview, "表示数", {value: "preview", style: "display: inline-block;", class: "mr-2"} %>
-                <%= radio_button_tag :gender, "reply", :checked => params[:gender] == "reply" %>
+                <%= radio_button_tag :gender, "reply", checked = params[:gender] == "reply" %>
                 <%= label_tag :gender_reply, "返信数", {value: "reply", style: "display: inline-block;", class: "mr-2"} %>
             </div>
             <div class="form-group text-right">
@@ -39,14 +38,14 @@
 <div class="py-2 border-bottom">
     <a href="/posts/<%= post.id.to_s %>" class="text-dark text-decoration-none">
         <div>
-            <% if @category_badge_colors.has_key?(post.category.id.to_s) %>
-            <span class="badge badge-<%= @category_badge_colors[post.category.id.to_s] %> mr-1">
-                <%= post.category.name %>
-            </span>
+            <% if post.category.badge_color %>
+                <span class="badge badge-<%= post.category.badge_color %> mr-1">
+                    <%= post.category.name %>
+                </span>
             <% else %>
-            <span class="badge badge-white mr-1">
-                その他
-            </span>
+                <span class="badge badge-white mr-1">
+                    その他
+                </span>
             <% end %>
             <%= post.name %> - <%= post.created_at.strftime("%Y/%m/%d %H:%M") %>
         </div>

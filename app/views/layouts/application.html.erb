@@ -23,6 +23,7 @@
         <div class="navbar-nav">
           <a class="nav-item nav-link" href="/posts">投稿一覧</a>
           <a class="nav-item nav-link" href="/posts/new">新規投稿</a>
+          <a class="nav-item nav-link" href="/posts/bookmark">ブックマーク</a>
         </div>
       </div>
     </nav>
@@ -38,6 +39,10 @@
     <% elsif flash[:notice] == "reply_success" %>
       <div class="alert alert-primary mb-0" role="alert">
         投稿に返信しました。
+      </div>
+    <% elsif flash[:notice] == "add_bookmark" %>
+      <div class="alert alert-primary mb-0" role="alert">
+        投稿をブックマークに追加しました。
       </div>
     <% end %>
 

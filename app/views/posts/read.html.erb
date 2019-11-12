@@ -1,12 +1,14 @@
 <% if @post.parent_post_id %>
     <div class="mb-2"><a href="/posts/<%= @post.parent_post_id %>">＜ 返信元に戻る</a></div>
+<% else %>
+    <div class="mb-2"><%= link_to "投稿一覧に戻る", "/posts" %></div>
 <% end %>
 
 <div class="border-bottom pb-3 mb-3">
     <div>
         <div class="float-left">
-            <% if @category_badge_colors.has_key?(@post.category.id.to_s) %>
-                <span class="badge badge-<%= @category_badge_colors[@post.category.id.to_s] %> mr-1">
+            <% if @post.category.badge_color %>
+                <span class="badge badge-<%= @post.category.badge_color %> mr-1">
                     <%= @post.category.name %>
                 </span>
             <% elsif @post.category_id != nil && @post.category_id != 99 %>
@@ -19,6 +21,12 @@
         <button type="button" class="btn btn-sm btn-secondary float-right" data-toggle="modal" data-target="#modal<%= @post.id.to_s %>">
             編集
         </button>
+        <%= form_tag({:controller => 'posts', :action => 'addBookmark'}, {:method => :post}) do %>
+            <%= hidden_field_tag :id, @post.id %>
+            <button type="submit" class="btn btn-sm btn-secondary float-right mr-2">
+                BM+
+            </button>
+        <% end %>
         <div style="clear: both;"></div>
         <div>
             <%= @post.name %> - <%= @post.created_at.strftime("%Y/%m/%d %H:%M") %>
