@@ -3,10 +3,11 @@ class PostsController < ApplicationController
     impressionist :actions => [:index, :read]
 
     CATEGORY_BADGE_COLORS = {
-        "1" => "warning",
-        "2" => "info",
-        "3" => "danger",
-        "4" => "success"
+        "1"  => "warning",
+        "2"  => "info",
+        "3"  => "danger",
+        "4"  => "success",
+        "10" => "secondary"
     }
 
     def home
@@ -28,15 +29,28 @@ class PostsController < ApplicationController
             .where(parent_post_id: nil)
             .where(is_hide: false)
         
+        # カテゴリ検索ありの場合
         if params[:category] && params[:category] != ""
             @posts = @posts.where(category_id: params[:category])
         end
 
-        if params[:keyword] && params[:keyword]
+        # キーワード検索ありの場合
+        if params[:keyword] && params[:keyword] != ""
             @posts = @posts.where("title LIKE ?", "%" + params[:keyword] + "%")
         end
-        
-        @posts = @posts.order(id: :desc)   
+
+        # ソート順決定
+        if params[:gender] && params[:gender] != ""
+            if params[:gender] == "date"
+                @posts = @posts.order(created_at: :desc)
+            elsif params[:gender] == "preview"
+                @posts = @posts.order(impressionist_count: :desc)
+            elsif params[:gender] == "reply"
+                @posts = @posts.order(reply_count: :desc)
+            end
+        else
+            @posts = @posts.order(id: :desc)
+        end 
     end
 
     def read

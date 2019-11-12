@@ -1,12 +1,7 @@
 <h2>投稿一覧</h2>
 
-<button 
-    type="button"
-    class="btn btn-primary btn-block my-3"
-    data-toggle="collapse"
-    data-target="#replyForm"
-    aria-expanded="false"
-    aria-controls="replyForm">
+<button type="button" class="btn btn-primary btn-block my-3" data-toggle="collapse" data-target="#replyForm"
+    aria-expanded="false" aria-controls="replyForm">
     検索条件を指定する
 </button>
 
@@ -15,14 +10,25 @@
         <%= form_tag({:controller => 'posts', :action => 'index'}, {:method => :get, :multipart => true, enforce_utf8: false}) do %>
             <div class="form-group">
                 <%= label_tag :keyword, 'キーワード検索' %>
-                <%= text_field_tag :keyword, params[:keyword], class: 'form-control', placeholder: "キーワード" %>
+                <%= text_field_tag :keyword, params[:keyword], class: 'form-control' %>
             </div>
             <div class="form-group">
                 <%= label_tag :category, 'カテゴリー' %>
                 <%= select_tag :category, options_for_select(@category_option, :selected => params[:category]), class: 'form-control' %>
             </div>
+            <%= params[:gender] == "date" %>
+            <div class="form-group">
+                <%= label_tag :gender, '表示順' %><br/>
+                <%= radio_button_tag :gender, "date", :checked => params[:gender] == "date" %>
+                <%= label_tag :gender_date, "更新日時", {value: "date", style: "display: inline-block;", class: "mr-2"} %>
+                <%= radio_button_tag :gender, "preview", :checked => params[:gender] == "preview" %>
+                <%= label_tag :gender_preview, "表示数", {value: "preview", style: "display: inline-block;", class: "mr-2"} %>
+                <%= radio_button_tag :gender, "reply", :checked => params[:gender] == "reply" %>
+                <%= label_tag :gender_reply, "返信数", {value: "reply", style: "display: inline-block;", class: "mr-2"} %>
+            </div>
             <div class="form-group text-right">
-                <%= submit_tag("送信", name: nil, class: "btn btn-primary") %>
+                <%= button_tag "リセット", type: :reset, name: nil, class: "btn btn-secondary" %>
+                <%= submit_tag "検索", name: nil, class: "btn btn-primary" %>
             </div>
         <% end %>
     </div>
@@ -30,22 +36,22 @@
 
 <div class="pb-2 border-bottom"></div>
 <% @posts.each do |post| %>
-    <div class="py-2 border-bottom">
-        <a href="/posts/<%= post.id.to_s %>" class="text-dark text-decoration-none">
-            <div> 
-                <% if @category_badge_colors.has_key?(post.category.id.to_s) %>
-                    <span class="badge badge-<%= @category_badge_colors[post.category.id.to_s] %> mr-1">
-                        <%= post.category.name %>
-                    </span>
-                <% else %>
-                    <span class="badge badge-white mr-1">
-                        その他
-                    </span>
-                <% end %>
-                <%= post.name %> - <%= post.created_at.strftime("%Y/%m/%d %H:%M") %>
-            </div>
-            <div class="lead"><%= post.title %></div>
-            <div>(閲覧:<%= post.impressionist_count %>, 返信:<%= post.reply_count %>)</div>
-        </a>
-    </div>
+<div class="py-2 border-bottom">
+    <a href="/posts/<%= post.id.to_s %>" class="text-dark text-decoration-none">
+        <div>
+            <% if @category_badge_colors.has_key?(post.category.id.to_s) %>
+            <span class="badge badge-<%= @category_badge_colors[post.category.id.to_s] %> mr-1">
+                <%= post.category.name %>
+            </span>
+            <% else %>
+            <span class="badge badge-white mr-1">
+                その他
+            </span>
+            <% end %>
+            <%= post.name %> - <%= post.created_at.strftime("%Y/%m/%d %H:%M") %>
+        </div>
+        <div class="lead"><%= post.title %></div>
+        <div>(閲覧:<%= post.impressionist_count %>, 返信:<%= post.reply_count %>)</div>
+    </a>
+</div>
 <% end %>

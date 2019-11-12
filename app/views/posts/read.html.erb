@@ -49,15 +49,15 @@
             <%= hidden_field_tag :id, @post.id %>
             <div class="form-group">
                 <%= label_tag :name, 'ニックネーム' %>
-                <%= text_field_tag :name, session[:name], class: 'form-control', placeholder: "ニックネーム" %>
+                <%= text_field_tag :name, session[:name], class: 'form-control' %>
             </div>
             <div class="form-group">
                 <%= label_tag :edit_pass, '編集時パスワード' %>
-                <%= text_field_tag :edit_pass, session[:edit_pass], class: 'form-control', placeholder: "編集時パスワード" %>
+                <%= text_field_tag :edit_pass, session[:edit_pass], class: 'form-control' %>
             </div>
             <div class="form-group">
                 <%= label_tag :content, '内容' %>
-                <%= text_area_tag :content, "", class: 'form-control', placeholder: "内容", rows: "4" %>
+                <%= text_area_tag :content, "", class: 'form-control', rows: "4" %>
             </div>
             <div class="form-group text-right">
                 <%= submit_tag("送信", class: "btn btn-primary") %>
@@ -93,7 +93,7 @@
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <%= text_field_tag :input_edit_pass, session[:edit_pass], class: 'form-control', placeholder: "削除用パスワード" %>
+                                    <%= text_field_tag :input_edit_pass, session[:edit_pass], class: 'form-control' %>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -120,7 +120,7 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <%= text_field_tag :input_edit_pass, session[:edit_pass], class: 'form-control', placeholder: "削除用パスワード" %>
+                        <%= text_field_tag :input_edit_pass, session[:edit_pass], class: 'form-control' %>
                     </div>
                 </div>
                 <div class="modal-footer">
