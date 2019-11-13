@@ -145,7 +145,7 @@ class PostsController < ApplicationController
             if image
                 # 画像アップロード
                 file_name = post.id.to_s + ".png"
-                File.binwrite("public/images/" + file_name, image.read)
+                File.binwrite(Rails.root + "public/images/" + file_name, image.read)
             end
             flash[:notice] = "create_post_success"
             redirect_to "/posts/" + post.id.to_s
@@ -164,9 +164,14 @@ class PostsController < ApplicationController
             reply_count: 0,
             category_id: 99
         )
-        logger.debug("st")
-        post.save!
-        logger.debug("en")
+        post.save
+
+        image = params[:image]
+        if image
+            # 画像アップロード
+            file_name = post.id.to_s + ".png"
+            File.binwrite(Rails.root + "public/images/" + file_name, image.read)
+        end
 
         # 返信数インクリメント(パフォーマンス考慮)
         Post.find(post.parent_post_id).increment(:reply_count).save

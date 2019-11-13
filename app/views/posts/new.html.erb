@@ -14,7 +14,7 @@
     </div>
     <div class="form-group">
         <%= label_tag :edit_pass, '編集時パスワード' %>
-        <%= text_field_tag :edit_pass, session[:edit_pass], class: 'form-control', class: "form-control" %>
+        <%= text_field_tag :edit_pass, session[:edit_pass], class: "form-control" %>
     </div>
     <div class="form-group">
         <%= label_tag :content, '内容' %>
@@ -22,7 +22,7 @@
     </div>
     <div class="form-group">
         <%= label_tag :image, '添付画像' %>
-        <%= file_field_tag :image %>
+        <%= file_field_tag :image, accept: 'image/jpg,image/jpeg,image/png,image/gif' %>
     </div>
     <div class="form-group text-right">
         <%= submit_tag("送信", class: "btn btn-primary") %>

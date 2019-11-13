@@ -53,7 +53,7 @@
 
 <div class="collapse" id="replyForm">
     <div class="card card-body">
-        <%= form_tag({:controller => 'posts', :action => 'reply'}, {:method => :post}) do %>
+        <%= form_tag({:controller => 'posts', :action => 'reply'}, {:method => :post, :multipart => true}) do %>
             <%= hidden_field_tag :id, @post.id %>
             <div class="form-group">
                 <%= label_tag :name, 'ニックネーム' %>
@@ -66,6 +66,10 @@
             <div class="form-group">
                 <%= label_tag :content, '内容' %>
                 <%= text_area_tag :content, "", class: 'form-control', rows: "4" %>
+            </div>
+            <div class="form-group">
+                <%= label_tag :image, '添付画像' %>
+                <%= file_field_tag :image, accept: 'image/jpg,image/jpeg,image/png,image/gif' %>
             </div>
             <div class="form-group text-right">
                 <%= submit_tag("送信", class: "btn btn-primary") %>
@@ -88,6 +92,11 @@
                 </div>
                 <br/>
                 <div class=" text-dark"><%= simple_format(h(reply.content), {}, wrapper_tag: "div") %></div>
+                <% if File.exist?("public/images/" + reply.id.to_s + ".png") %>
+                    <div class="pt-2">
+                        <%= image_tag "/images/" + reply.id.to_s + ".png", style: "max-width:100%" %>
+                    </div>
+                <% end %>
             </div>
             <%= form_tag('/posts/' + reply.id.to_s + "/edit" , method: :post) do %>
                 <div class="modal fade" id="modal<%= reply.id.to_s %>" tabindex="-1" role="dialog" aria-labelledby="label<%= reply.id.to_s %>" aria-hidden="true">
