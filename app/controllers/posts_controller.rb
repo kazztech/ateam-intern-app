@@ -150,7 +150,7 @@ class PostsController < ApplicationController
             flash[:notice] = "create_post_success"
             redirect_to "/posts/" + post.id.to_s
         else
-            flash[:notice] = "create_post_faild"
+            flash[:notice] = "validation_error"
             redirect_back(fallback_location: "/posts")
         end
     end
@@ -164,19 +164,23 @@ class PostsController < ApplicationController
             reply_count: 0,
             category_id: 99
         )
-        post.save
 
-        image = params[:image]
-        if image
-            # 画像アップロード
-            file_name = post.id.to_s + ".png"
-            File.binwrite(Rails.root + "public/images/" + file_name, image.read)
+        if post.save
+            image = params[:image]
+            if image
+                # 画像アップロード
+                file_name = post.id.to_s + ".png"
+                File.binwrite(Rails.root + "public/images/" + file_name, image.read)
+            end
+
+            # 返信数インクリメント(パフォーマンス考慮)
+            Post.find(post.parent_post_id).increment(:reply_count).save
+
+            flash[:notice] = "reply_success"
+        else
+            flash[:notice] = "validation_error"
         end
 
-        # 返信数インクリメント(パフォーマンス考慮)
-        Post.find(post.parent_post_id).increment(:reply_count).save
-
-        flash[:notice] = "reply_success"
         redirect_to "/posts/" + params[:id]
     end
 end
